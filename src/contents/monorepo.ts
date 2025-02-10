@@ -44,7 +44,7 @@ export const packageJson = (monorepoName: string, pnpmVersion: string) => ({
   scripts: {
     build: 'turbo run build',
     'check-types': 'turbo run check-types',
-    db: 'pnpm --filter @packages/db',
+    db: 'pnpm --filter @packages/database',
     'db:init': 'pnpm db migrate dev --name init',
     'db:seed': 'pnpm db seed',
     'db:reset': 'pnpm docker db:reset && pnpm db migrate dev',

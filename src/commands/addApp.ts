@@ -47,10 +47,10 @@ export const addApp = (
       `pnpm dlx create-next-app@latest ${appDir} --typescript --eslint --tailwind --app --src-dir --import-alias "@/*" --use-pnpm --turbo`
     );
     runCommand(
-      `pnpm add @packages/queue@workspace:^ @packages/db@workspace:^ @prisma/client`,
+      `pnpm add @packages/queue@workspace:^ @packages/database@workspace:^ drizzle-orm zustand axios`,
       { cwd: appDir }
     );
-    runCommand(`pnpm add -D @packages/types@workspace:^`, { cwd: appDir });
+    // runCommand(`pnpm add -D @packages/types@workspace:^`, { cwd: appDir });
     writeFile(path.join(appDir, '.env'), dbEnv(dbName));
     removeGitDirectory(appDir, appName);
     return;
@@ -99,20 +99,36 @@ export const addApp = (
   };
 
   if (type === 'package') {
-    if (appName === 'db') {
-      console.log('Adding db package...');
-      packageJson.dependencies['@prisma/client'] = '^6';
-      packageJson.dependencies['nanoid'] = '^5';
-      packageJson.dependencies['@faker-js/faker'] = '^9';
-      packageJson.devDependencies['prisma'] = '^6';
+    if (appName === 'database') {
+      console.log('Adding database package...');
+      packageJson.dependencies['@anatine/zod-nestjs'] = '^2.0.10';
+      packageJson.dependencies['@nestjs/common'] = '^11.0.1';
+      packageJson.dependencies['@nestjs/config'] = '^4.0.0';
+      packageJson.dependencies['@nestjs/core'] = '^11.0.1';
+      packageJson.dependencies['@nestjs/platform-express'] = '^11.0.1';
+      packageJson.dependencies['crypto'] = '^1.0.1';
+      packageJson.dependencies['dotenv'] = '^16.4.7';
+      packageJson.dependencies['drizzle-orm'] = '^0.39.1';
+      packageJson.dependencies['pg'] = '^8.13.1';
+      packageJson.dependencies['reflect-metadata'] = '^0.2.2';
+      packageJson.dependencies['rxjs'] = '^7.8.1';
+      packageJson.dependencies['zod'] = '^3.24.1';
+
       packageJson.devDependencies['@types/node'] = '^20';
-      packageJson.scripts['build'] = `pnpm build:prisma && tsup --clean`;
-      packageJson.scripts['build:prisma'] = `prisma generate`;
-      packageJson.scripts['migrate'] = `prisma migrate`;
-      packageJson.scripts['seed'] = `prisma db seed`;
-      packageJson.scripts['push'] = `prisma db push`;
-      packageJson.scripts['studio'] = `prisma studio`;
+      packageJson.devDependencies['@types/pg'] = '^8.11.11';
+      packageJson.devDependencies['drizzle-kit'] = '^0.30.4';
+
+      packageJson.scripts['build'] = `tsup --dts --clean`;
+      packageJson.scripts['drop'] = `drizzle-kit drop`;
+      packageJson.scripts['generate'] = `drizzle-kit generate`;
+      packageJson.scripts['migrate'] = `drizzle-kit migrate`;
+      packageJson.scripts['studio'] = `drizzle-kit studio`;
+      packageJson.scripts['seed'] = `tsx scripts/seed.ts`;
       writeFile(path.join(appDir, '.env'), dbEnv(dbName));
+      packageJson.exports['.'] = {
+        './schemas': './dist/schemas/index.js',
+        './types': './dist/types/index.js',
+      };
     } else if (appName === 'queue') {
       console.log('Adding queue package...');
       packageJson.dependencies['bullmq'] = '^5';
@@ -121,7 +137,7 @@ export const addApp = (
       delete packageJson.scripts.dev;
     }
     packageJson.exports['.'] = {
-      types: './src/index.ts',
+      // types: './src/index.ts',
       default: './dist/index.js',
     };
   } else {
@@ -129,7 +145,7 @@ export const addApp = (
       packageJson.dependencies['@faker-js/faker'] = '^9';
     }
     packageJson.dependencies['@packages/types'] = 'workspace:^';
-    packageJson.dependencies['@packages/db'] = 'workspace:^';
+    packageJson.dependencies['@packages/database'] = 'workspace:^';
     packageJson.dependencies['@packages/queue'] = 'workspace:^';
     packageJson.dependencies['bullmq'] = '^5';
     packageJson.dependencies['ioredis'] = '^5';
@@ -139,9 +155,9 @@ export const addApp = (
   if (type === 'nest') {
     writeFile(path.join(appDir, 'src', 'main.ts'), nestMainTs);
     writeFile(path.join(appDir, 'src', 'app.module.ts'), nestAppModuleTs);
-    packageJson.dependencies['@nestjs/core'] = '^9';
-    packageJson.dependencies['@nestjs/common'] = '^9';
-    packageJson.dependencies['@nestjs/platform-express'] = '^9';
+    packageJson.dependencies['@nestjs/core'] = '^11';
+    packageJson.dependencies['@nestjs/common'] = '^11';
+    packageJson.dependencies['@nestjs/platform-express'] = '^11';
     packageJson.dependencies['reflect-metadata'] = '^0.1.13';
     packageJson.dependencies['rxjs'] = '^7';
   } else {

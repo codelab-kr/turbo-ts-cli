@@ -4,7 +4,7 @@ import { execSync } from 'child_process';
 
 /**
  * Reads a template file from the CLI's templates directory, replaces placeholders, and writes it to the target monorepo package.
- * @param templateType - The type of package template (e.g., 'db', 'queue', 'types').
+ * @param templateType - The type of package template (e.g., 'database', 'queue', 'types').
  * @param packageName - The name of the package to create.
  * @param monorepoRoot - The root directory of the monorepo.
  * @param cliRoot - The root directory of the CLI program.

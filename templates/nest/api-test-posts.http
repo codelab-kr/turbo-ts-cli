@@ -1,0 +1,39 @@
+### 🌍 Base API URL and Test Post ID
+@baseUrl = http://localhost:4001
+@id = 1  
+# Replace with actual post ID if needed
+
+### 🛒 Get All Posts (GET)
+GET {{baseUrl}}/posts
+
+###
+
+### 🔍 Get Post by ID (GET)
+GET {{baseUrl}}/posts/{{id}}
+
+###
+
+### ➕ Create a New Post (POST)
+POST {{baseUrl}}/posts
+Content-Type: application/json
+
+{
+  "content": "하하하하하",
+  "userId": "1"
+}
+
+###
+
+### ✏ Update Post Information (PUT)
+PUT {{baseUrl}}/posts/{{id}}
+Content-Type: application/json
+
+{
+  "email": "Updated Post",
+  "password": 2000
+}
+
+###
+
+### 🗑 Delete a Post (DELETE)
+DELETE {{baseUrl}}/posts/{{id}}

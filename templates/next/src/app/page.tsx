@@ -1,18 +1,19 @@
 import { generatePosts } from '@/actions';
-import { db } from '@packages/db';
+import { db, schema } from '@packages/database';
+import { eq } from 'drizzle-orm';
+const { users, posts: post } = schema;
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const posts = await db.post.findMany({
-    select: {
-      id: true,
-      content: true,
-      createdAt: true,
-      user: { select: { id: true, username: true, name: true } },
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+  const posts = await db
+    .select({
+      id: post.id,
+      content: post.content,
+      userEmail: users.email,
+    })
+    .from(post)
+    .innerJoin(users, eq(post.userId, users.id));
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -31,11 +32,11 @@ export default async function Home() {
           key={post.id}
           className="bg-[#1a1a2a] shadow-lg rounded-md p-4 mb-4 border border-[#3a4a7a]"
         >
-          <p className="font-bold text-[#a0b0ff]">@{post.user.username}</p>
           <p className="mt-2 text-[#dcdceb]">{post.content}</p>
-          <p className="mt-2 text-sm text-[#8090c0]">
-            {new Date(post.createdAt).toLocaleString()}
-          </p>
+          <p className="font-bold text-[#a0b0ff]">@{post.userEmail}</p>
+          {/* <p className="mt-2 text-sm text-[#8090c0]">
+            {new Date(post.timestamp).toLocaleString()}
+          </p> */}
         </div>
       ))}
     </div>

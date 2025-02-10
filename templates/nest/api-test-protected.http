@@ -1,0 +1,17 @@
+### 🌍 Base API URL and Test User ID
+@baseUrl = http://localhost:4001
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Indpc2h0eUBnbWFpbC5jb20iLCJzdWIiOjEsImlhdCI6MTczODQxMzM2OCwiZXhwIjoxNzM4NDE0MjY4fQ.yZii48LeF4eucRopXWv7rnC2WXtD_v7L_HAq5huiITE
+
+### ✏ Get User profile
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+### ✏ Get User profile
+GET {{baseUrl}}/auth/manual/?token={{accessToken}}
+Accept: application/json
+
+###
+

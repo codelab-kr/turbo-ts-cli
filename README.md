@@ -37,15 +37,17 @@ Despite being **batteries-included** with features like ESLint, TypeScript, and 
 pnpm add -g turbo-ts-cli
 ```
 
-or use `npx` (without installation):
-```sh
-npx turbo-ts-cli@latest <monorepo-name>
-```
-
 ### **2️⃣ Create a new monorepo**
 ```sh
 turbo-ts-cli my-monorepo
 ```
+❗️ or use `npx` (without installation):
+```sh
+npx turbo-ts-cli@latest my-monorepo
+```
+
+
+
 Follow the interactive prompts to customize your project setup.
 
 ---
@@ -60,7 +62,7 @@ my-monorepo/
 │   ├── api/               # NestJS API server
 │   └── worker/            # Node.js worker application
 ├── packages/
-│   ├── db/                # Shared database package (Prisma)
+│   ├── database/          # Shared database package (Postgresql + Drizzle ORM)
 │   ├── docker/            # Docker Compose configuration for development
 │   ├── queue/             # Shared queue package (BullMQ)
 │   ├── types/             # Shared TypeScript type package

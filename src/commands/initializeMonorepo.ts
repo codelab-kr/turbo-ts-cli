@@ -73,7 +73,7 @@ export const initializeMonorepo = (monorepoName: string): void => {
 
   // Add default packages
   const basePackage = ['eslint-config', 'typescript-config', 'docker'];
-  const helperPackage = ['db', 'types', 'queue'];
+  const helperPackage = ['database', 'types', 'queue'];
 
   basePackage.forEach((pkg) => {
     addBasePackage(pkg, path.join(rootDir, 'packages'), dbName);
@@ -83,19 +83,25 @@ export const initializeMonorepo = (monorepoName: string): void => {
     addApp(pkg, 'package', monorepoName);
   });
 
-  // Add default apps & copy templates
-  addApp('web', 'next', monorepoName);
-  addApp('worker', 'node', monorepoName);
-  addApp('api', 'nest', monorepoName);
-
   const cliRoot = path.resolve(__dirname, '..');
   const monorepoRoot = rootDir;
   console.log('CLI Root:', cliRoot);
   console.log('Monorepo Root:', monorepoRoot);
 
-  copyCliPackageTemplate('db', 'db', monorepoRoot, 'packages', cliRoot);
+  copyCliPackageTemplate(
+    'database',
+    'database',
+    monorepoRoot,
+    'packages',
+    cliRoot
+  );
   copyCliPackageTemplate('types', 'types', monorepoRoot, 'packages', cliRoot);
   copyCliPackageTemplate('queue', 'queue', monorepoRoot, 'packages', cliRoot);
+
+  // Add default apps & copy templates
+  addApp('web', 'next', monorepoName);
+  addApp('worker', 'node', monorepoName);
+  addApp('api', 'nest', monorepoName);
 
   copyCliPackageTemplate('nest', 'api', monorepoRoot, 'apps', cliRoot);
   copyCliPackageTemplate('node', 'worker', monorepoRoot, 'apps', cliRoot);

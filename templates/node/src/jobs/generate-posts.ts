@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { db, genId } from '@packages/db';
+import { db, schema } from '@packages/database';
 import { JobData, JobType } from '@packages/queue';
+import { eq } from 'drizzle-orm';
 
 export const runGeneratePosts = async (
   data: JobData[JobType.GeneratePosts]
@@ -9,35 +10,31 @@ export const runGeneratePosts = async (
 
   console.log(`Generating ${count}`);
 
-  await db.$transaction(
-    Array.from({ length: count }).map(() => {
-      const data = {
-        id: genId(),
-        username: faker.internet.username(),
-        fullName: faker.person.fullName(),
-        content: faker.lorem.paragraph({ min: 1, max: 3 }),
-        createdAt: faker.date.recent({ days: 30 }),
-      };
-      console.log(data);
-      return db.post.create({
-        data: {
-          id: data.id,
-          content: data.content,
-          createdAt: data.createdAt,
-          user: {
-            connectOrCreate: {
-              create: {
-                id: genId(),
-                name: data.fullName,
-                username: data.username,
-              },
-              where: {
-                username: data.username,
-              },
-            },
-          },
-        },
+  const fakePosts = await Promise.all(
+    Array.from({ length: count }).map(async () => {
+      const id = faker.number.int({ min: 1, max: 2_147_483_647 });
+      const email = faker.internet.email();
+
+      let user = await db.query.users.findFirst({
+        where: eq(schema.users.id, id),
       });
+      if (!user) {
+        [user] = await db
+          .insert(schema.users)
+          .values({ email, password: '123456' })
+          .returning();
+      }
+
+      return {
+        content: faker.lorem.paragraph({ min: 1, max: 3 }),
+        createdAt: new Date(),
+        userId: user.id,
+      };
     })
   );
+
+  console.log(fakePosts);
+
+  // 🏷️ Drizzle ORM을 사용하여 데이터 삽입
+  await db.insert(schema.posts).values(fakePosts);
 };
