@@ -1,0 +1,13 @@
+{
+  "extends": "@packages/tsconfig/base.json",
+  "compilerOptions": {
+    "declaration": true,
+    "incremental": false,
+    "outDir": "./dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "./drizzle.config.ts"],
+  "exclude": ["node_modules", "test", "dist"]
+}

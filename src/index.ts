@@ -1,9 +1,9 @@
 import path from 'path';
 import fs from 'fs';
 import { program } from 'commander';
-import { initializeMonorepo } from './commands/initializeMonorepo';
-import { addApp } from './commands/addApp';
 import inquirer from 'inquirer';
+import { initializeMonorepo } from './commands/init/initRepo';
+import { addApp } from './commands/add/addApp';
 
 const MONOREPO_MARKER = '.monorepo'; // 파일로 초기화 상태 관리
 let monorepoDir = '';
@@ -66,17 +66,18 @@ program
       process.exit(1);
     }
 
+    monorepoDir = path.join(currentDir, name);
+
     if (options.node) {
-      addApp(name, 'node');
+      addApp(name, 'node', monorepoDir);
     } else if (options.next) {
-      addApp(name, 'next');
+      addApp(name, 'next', monorepoDir);
     } else if (options.nest) {
-      addApp(name, 'nest');
+      addApp(name, 'nest', monorepoDir);
     } else if (options.package) {
-      addApp(name, 'package');
+      addApp(name, 'package', monorepoDir);
     } else {
       // Default: Initialize monorepo
-      monorepoDir = path.join(currentDir, name);
       initializeMonorepo(name);
       process.chdir(monorepoDir); // Change working directory to the new monorepo root
       markAsMonorepo(); // Mark as monorepo root

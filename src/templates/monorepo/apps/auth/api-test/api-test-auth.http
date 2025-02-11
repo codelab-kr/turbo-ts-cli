@@ -1,0 +1,42 @@
+### 🌍 Base API URL and Test User ID
+@baseUrl = http://localhost:4000
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM3LCJpYXQiOjE3Mzg0ODQwNTcsImV4cCI6MTczOTA4ODg1N30.K8lnyAS16nA3w93IYb8OkluSwbABSS5843RveijKSmM
+
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM3LCJlbWFpbCI6Indpc2h0eTNAZ21haWwuY29tIiwiaWF0IjoxNzM4NDg2MTk1LCJleHAiOjE3Mzg0ODcwOTV9.OkzFJ2yVhsAHxvqH-xNQ0zlTuwZS_zh8AnyBJghNtsg
+
+
+###
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "wishty3@gmail.com",
+  "password": "123456"
+}
+
+
+###
+
+### 로그인 요청
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "wishty3@gmail.com",
+  "password": "123456"
+}
+
+###
+
+### 로그아웃 요청
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+
+### 리프레시 토큰을 사용하여 새로운 액세스 토큰 요청
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+Cookie: refreshToken={{refreshToken}}
+
+

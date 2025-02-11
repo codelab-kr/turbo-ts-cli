@@ -1,0 +1,46 @@
+### 🌍 Base API URL and Test User ID
+@baseUrl = http://localhost:4000
+@id = 2 
+# Replace with actual User ID if needed
+
+### 🛒 Get All Users (GET)
+GET {{baseUrl}}/users
+
+###
+
+### 🛒 Get All Users (GET)
+GET {{baseUrl}}/test
+
+###
+
+
+### 🔍 Get User by ID (GET)
+GET {{baseUrl}}/users/{{id}}
+
+###
+
+### ➕ Create a New User (POST)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "provider": "email",
+  "email": "test7@mail.com",
+  "password": "123456"
+}
+
+###
+
+### ✏ Update User Information (PUT)
+PUT {{baseUrl}}/Users/{{id}}
+Content-Type: application/json
+
+{
+  "email": "Updated User",
+  "password": 2000
+}
+
+###
+
+### 🗑 Delete a User (DELETE)
+DELETE {{baseUrl}}/Users/{{id}}

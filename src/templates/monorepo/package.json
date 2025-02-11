@@ -1,0 +1,29 @@
+{
+  "name": "turbo-ts-cli-work",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "packageManager": "pnpm@9.15.4",
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.3"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "db": "pnpm --filter @packages/database",
+    "db:d": "pnpm db drop",
+    "db:g": "pnpm db generate",
+    "db:m": "pnpm db migrate",
+    "db:s": "pnpm db seed",
+    "dev": "turbo run dev",
+    "docker": "pnpm --filter @packages/docker",
+    "format": "prettier --write .",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
